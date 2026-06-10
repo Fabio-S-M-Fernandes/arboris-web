@@ -1,0 +1,224 @@
+/* Container principal e fundo animado (namespaced para evitar conflitos) */
+.arboris-auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+  /* Fundo simples: gradiente suave que substitui o canvas pesado visualmente */
+ 
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.arboris-auth-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Vinheta sutil para foco central sem usar imagens pesadas */
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.arboris-auth-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* manter como decoração sutil (baixa opacidade) caso o canvas ainda exista por baixo */
+  background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 170, 0.03), transparent 25%),
+                    radial-gradient(circle at 85% 30%, rgba(0, 150, 255, 0.03), transparent 25%);
+  opacity: 0.06;
+  z-index: 0;
+  animation: pulse-bg 24s infinite alternate;
+  pointer-events: none;
+}
+
+/* Pequeno painel translúcido atrás do cartão (transparente e discreto) */
+.auth-plate {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 380px;
+  height: 550px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02); /* muito transparente */
+  border: 3px solid rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.651);
+  z-index: 1;
+  pointer-events: none; /* não bloquear interação */
+}
+
+/* Configuração do 3D Flip */
+.auth-card-container {
+  perspective: 1000px; /* Cria a profundidade 3D */
+  z-index: 2; /* ficar acima do fundo decorativo e da placa */
+  width: 360px; /* mais compacto */
+  height: 480px;
+}
+
+.auth-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.auth-card-container.flipped .auth-card {
+  transform: rotateY(180deg);
+}
+
+/* Faces do cartão (Glassmorphism) */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  /* sem fundo: deixar totalmente transparente para exibir o holograma */
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  border-radius: 20px;
+  padding: 28px; /* padding reduzido para cartão menor */
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Tipografia e Ícones */
+.brand-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tree-icon {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 170, 0.6));
+}
+
+h2 {
+  color: #fff;
+  font-size: 1.8rem;
+  margin-top: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
+}
+
+/* Inputs Holográficos */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input-group {
+  position: relative;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+input:focus {
+  background: rgba(0, 255, 170, 0.05);
+  border-color: rgba(0, 255, 170, 0.5);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.1);
+}
+
+/* Linha de escaneamento embaixo do input */
+.holographic-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, transparent, #00ffaa, transparent);
+  transition: width 0.4s ease;
+}
+
+input:focus ~ .holographic-line {
+  width: 100%;
+}
+
+/* Botão Neon */
+.holo-button {
+  margin-top: 10px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6c5ce7, #00ffaa);
+  color: #050d14;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.4);
+}
+
+.holo-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 255, 170, 0.6), 
+              0 0 10px rgba(108, 92, 231, 0.6);
+}
+
+/* Texto de alternância (Toggle) */
+.toggle-text {
+  text-align: center;
+  margin-top: 25px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.toggle-text span {
+  color: #00ffaa;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.toggle-text span:hover {
+  color: #fff;
+  text-shadow: 0 0 8px #00ffaa;
+}
+
+/* Animações Keyframes */
+@keyframes pulse-bg {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Small error/message style */
+.auth-error {
+  color: #ffb4b4;
+  background: rgba(255,80,80,0.04);
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
