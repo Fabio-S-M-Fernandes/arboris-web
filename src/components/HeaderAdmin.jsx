@@ -1,12 +1,11 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { signOutAndClear } from '../lib/auth'
 
 export default function HeaderAdmin() {
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    localStorage.removeItem('logado')
-    localStorage.removeItem('token')
+  const handleLogout = async () => {
+    await signOutAndClear()
     navigate('/')
   }
 

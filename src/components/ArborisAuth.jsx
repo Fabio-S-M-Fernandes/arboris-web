@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ArborisAuth.css';
 import TermsModal from './TermsModal'
-
-// Use VITE_API_BASE if definido; fallback para caminho provável no XAMPP
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost/ArborisX/backend'
+import { supabase } from '../lib/supabase';
+import { clearLocalAuthState, persistSession, signOutAndClear } from '../lib/auth';
 
 export default function ArborisAuth({ defaultIsLogin = true }) {
   const navigate = useNavigate()
@@ -29,29 +28,31 @@ export default function ArborisAuth({ defaultIsLogin = true }) {
     setLoginError('')
     setLoginLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/login.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: loginEmail, senha: loginSenha }),
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: loginEmail,
+        password: loginSenha,
       })
-      const data = await res.json()
-      if (res.ok && data.status === 'sucesso') {
-        localStorage.setItem('logado', 'true')
-        if (data.token) localStorage.setItem('token', data.token)
-        // If backend says terms already accepted, persist locally and go home
-        if (data.termsAccepted === true || data.termsAccepted === 1 || data.termsAccepted === '1') {
+
+      if (error) {
+        setLoginError(error.message || 'Credenciais inválidas')
+        return
+      }
+
+      if (data?.session) {
+        persistSession(data.session)
+        
+        // Verificar se termos já foram aceitos
+        const termsAccepted = data.user?.user_metadata?.terms_accepted || false
+        
+        if (termsAccepted) {
           localStorage.setItem('termsAccepted', 'true')
-          navigate('/home')
-        } else if (localStorage.getItem('termsAccepted') === 'true') {
           navigate('/home')
         } else {
           setShowTerms(true)
         }
-      } else {
-        setLoginError(data.mensagem || data.error || 'Credenciais inválidas')
       }
     } catch (err) {
-      console.error('Login request failed', err)
+      console.error('Login failed', err)
       setLoginError('Erro na conexão')
     } finally {
       setLoginLoading(false)
@@ -63,81 +64,68 @@ export default function ArborisAuth({ defaultIsLogin = true }) {
     setRegMsg('')
     setRegLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/cadastro.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome: regNome, email: regEmail, senha: regSenha }),
-      })
-      const data = await res.json()
-      if (res.ok && data.status === 'sucesso') {
-        // Try to auto-login the newly created user so we can show terms immediately
-        try {
-          const loginRes = await fetch(`${API_BASE}/login.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: regEmail, senha: regSenha }),
-          })
-          const loginData = await loginRes.json()
-          if (loginRes.ok && loginData.status === 'sucesso') {
-            localStorage.setItem('logado', 'true')
-            if (loginData.token) localStorage.setItem('token', loginData.token)
-            if (loginData.termsAccepted === true || loginData.termsAccepted === 1 || loginData.termsAccepted === '1') {
-              localStorage.setItem('termsAccepted', 'true')
-              navigate('/home')
-            } else {
-              setShowTerms(true)
-            }
-          } else {
-            setRegMsg('Usuário criado. Faça login para continuar.')
-            setTimeout(() => setIsLogin(true), 900)
+      const { data, error } = await supabase.auth.signUp({
+        email: regEmail,
+        password: regSenha,
+        options: {
+          data: {
+            name: regNome,
+            terms_accepted: false,
           }
-        } catch (err) {
-          console.error('Auto-login failed', err)
-          setRegMsg('Usuário criado. Faça login para continuar.')
-          setTimeout(() => setIsLogin(true), 900)
         }
-      } else {
-        setRegMsg(data.mensagem || data.error || 'Erro no cadastro')
+      })
+
+      if (error) {
+        setRegMsg(error.message || 'Erro no cadastro')
+        return
+      }
+
+      if (data?.session) {
+        persistSession(data.session)
+        setShowTerms(true)
+        return
+      }
+
+      if (data?.user) {
+        setRegMsg('Cadastro realizado. Verifique seu email para confirmar a conta.')
+        setTimeout(() => setIsLogin(true), 1200)
       }
     } catch (err) {
-      console.error('Register request failed', err)
+      console.error('Register failed', err)
       setRegMsg('Erro na conexão')
     } finally {
       setRegLoading(false)
     }
   }
 
-  const handleAcceptTerms = () => {
-    ;(async () => {
-      const token = localStorage.getItem('token')
-      try {
-        const res = await fetch(`${API_BASE}/accept_terms.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': token ? `Bearer ${token}` : '' },
-          body: JSON.stringify({}),
-        })
-        const data = await res.json()
-        if (res.ok && data.status === 'sucesso') {
-          localStorage.setItem('termsAccepted', 'true')
-          setShowTerms(false)
-          navigate('/home')
-        } else {
-          setLoginError(data.mensagem || 'Não foi possível registrar o aceite dos termos')
-        }
-      } catch (err) {
-        console.error('Accept terms request failed', err)
-        setLoginError('Erro na conexão ao aceitar termos')
+  const handleAcceptTerms = async () => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: { terms_accepted: true }
+      })
+
+      if (error) {
+        setLoginError(error.message || 'Não foi possível registrar o aceite dos termos')
+        return
       }
-    })()
+
+      localStorage.setItem('termsAccepted', 'true')
+      setShowTerms(false)
+      navigate('/home')
+    } catch (err) {
+      console.error('Accept terms failed', err)
+      setLoginError('Erro ao aceitar termos')
+    }
   }
 
   const handleDeclineTerms = () => {
     // Clear login state and redirect to landing
-    localStorage.removeItem('logado')
-    localStorage.removeItem('token')
+    clearLocalAuthState()
     setShowTerms(false)
     setLoginError('Você precisa aceitar os termos para usar o sistema')
     navigate('/')
+    // Sign out from Supabase
+    signOutAndClear()
   }
 
   return (

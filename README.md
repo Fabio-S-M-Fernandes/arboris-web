@@ -1,24 +1,34 @@
-# React + Vite
+# ArborisX
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicacao React + Vite do ArborisX, usando Supabase para autenticacao e sessao.
 
-Currently, two official plugins are available:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- Vite
+- Supabase Auth
+- React Router
 
-## React Compiler
+## Configuracao
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Crie um arquivo `.env` na raiz do projeto:
 
-## Expanding the ESLint configuration
+```env
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_ANON_KEY=sua_chave_anon_public
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Use a URL principal do projeto Supabase, sem `/rest/v1/`.
 
-## Organização do projeto
+## Scripts
 
-- **Frontend:** o código React está em `src/` com ativos em `public/`.
-- **Backend/API:** a implementação principal de API em PHP fica em `backend/`.
-- **Arquivos arquivados:** versões antigas de endpoints PHP que estavam na raiz foram movidas para `archive/` como backup (não são mais ativas).
-- Se desejar que eu apague os arquivos em `archive/`, confirme para eu proceder.
+```bash
+npm install
+npm run dev
+npm run build
+npm run lint
+```
 
+## Autenticacao
+
+Login, cadastro, sessao e aceite de termos usam `@supabase/supabase-js` diretamente no frontend.

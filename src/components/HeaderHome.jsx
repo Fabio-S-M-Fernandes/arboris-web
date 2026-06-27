@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import AnimationToggle from './AnimationToggle'
 import { useNavigate, Link } from 'react-router-dom'
+import { signOutAndClear } from '../lib/auth'
 
 export default function HeaderHome() {
   const navigate = useNavigate()
@@ -12,9 +13,8 @@ export default function HeaderHome() {
     return () => window.removeEventListener('storage', onStorage)
   }, [])
 
-  const handleLogout = () => {
-    localStorage.removeItem('logado')
-    localStorage.removeItem('token')
+  const handleLogout = async () => {
+    await signOutAndClear()
     setLogged(false)
     navigate('/')
   }

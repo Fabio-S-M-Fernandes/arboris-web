@@ -223,7 +223,8 @@ canvas {
   text-align: left;
   background: linear-gradient(90deg, #f7ffff 0%, var(--neon-blue) 58%, #6dffe1 100%);
   background-size: 200% 100%;
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; 
+  background-clip: text; /* Adicione esta linha logo abaixo */
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 14px rgba(0, 243, 255, 0.28);
   animation: neon-shimmer 3.5s linear infinite, neon-pulse 4s ease-in-out infinite;
@@ -1495,7 +1496,7 @@ canvas {
   border: 1px solid rgba(0,243,255,0.10) !important;
   border-radius: 16px !important;
   background: linear-gradient(115deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01) 38%, rgba(0,243,255,0.03)), rgba(4, 12, 18, 0.72) !important;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36) !important, inset 0 1px 0 rgba(255,255,255,0.04) !important, 0 0 28px rgba(0, 243, 255, 0.06) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 28px rgba(0, 243, 255, 0.06) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
   z-index: 5 !important;

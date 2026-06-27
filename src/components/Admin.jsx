@@ -1,14 +1,13 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeaderAdmin from './HeaderAdmin'
 import FooterAdmin from './FooterAdmin'
+import { signOutAndClear } from '../lib/auth'
 
 export default function Admin() {
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    localStorage.removeItem('logado')
-    localStorage.removeItem('token')
+  const handleLogout = async () => {
+    await signOutAndClear()
     navigate('/')
   }
 
