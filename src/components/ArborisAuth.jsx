@@ -87,7 +87,24 @@ export default function ArborisAuth({ defaultIsLogin = true }) {
       }
 
       if (data?.user) {
-        setRegMsg('Cadastro realizado. Verifique seu email para confirmar a conta.')
+        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+          email: regEmail,
+          password: regSenha,
+        })
+
+        if (loginError) {
+          setRegMsg('Cadastro realizado. Faça login para continuar.')
+          setTimeout(() => setIsLogin(true), 1200)
+          return
+        }
+
+        if (loginData?.session) {
+          persistSession(loginData.session)
+          setShowTerms(true)
+          return
+        }
+
+        setRegMsg('Cadastro realizado. Faça login para continuar.')
         setTimeout(() => setIsLogin(true), 1200)
       }
     } catch (err) {
