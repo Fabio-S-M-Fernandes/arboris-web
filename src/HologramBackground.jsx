@@ -190,7 +190,7 @@ export default function HologramBackground({ className = '' }) {
     function drawBaseFlow(now) {
       ctx.save();
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = 'rgba(2,6,8,0.36)';
+      ctx.fillStyle = 'rgba(1,8,5,0.36)';
       ctx.fillRect(0, 0, pw, ph);
 
       const passes = lowPerf ? (isMobile ? 1 : 2) : 5;
@@ -204,7 +204,7 @@ export default function HologramBackground({ className = '' }) {
           const y = ph * 0.5 + Math.sin((now * 0.0008) + i * 0.25 + p * 0.6) * amplitude;
           if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = `rgba(10,220,200,${alpha})`;
+        ctx.strokeStyle = `rgba(48,205,109,${alpha})`;
         ctx.lineWidth = 0.8 + p * 0.6;
         ctx.stroke();
       }
@@ -223,7 +223,7 @@ export default function HologramBackground({ className = '' }) {
         const r = maxR * (0.16 + i * 0.12);
         const wobble = Math.sin(now * 0.0004 + i) * 0.12;
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,243,255,${0.035 + i * 0.012})`;
+        ctx.strokeStyle = `rgba(53,242,121,${0.035 + i * 0.012})`;
         ctx.lineWidth = lowPerf ? 0.7 : 1.1 + i * 0.18;
         ctx.setLineDash(i % 2 ? [r * 0.08, r * 0.035] : [r * 0.16, r * 0.055, r * 0.025, r * 0.05]);
         ctx.arc(cx, cy, r, -Math.PI * (0.95 + wobble), Math.PI * (0.62 - wobble));
@@ -237,7 +237,7 @@ export default function HologramBackground({ className = '' }) {
         const inner = maxR * 0.12;
         const outer = maxR * (0.48 + 0.08 * Math.sin(i + now * 0.0005));
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(100,255,235,${i % 3 === 0 ? 0.08 : 0.04})`;
+        ctx.strokeStyle = `rgba(150,236,173,${i % 3 === 0 ? 0.08 : 0.04})`;
         ctx.lineWidth = i % 3 === 0 ? 1.1 : 0.55;
         ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner * 0.72);
         ctx.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer * 0.72);
@@ -246,9 +246,9 @@ export default function HologramBackground({ className = '' }) {
 
       const scanY = (ph * 0.12) + ((now * 0.035) % (ph * 0.78));
       const scan = ctx.createLinearGradient(0, scanY - 36, 0, scanY + 36);
-      scan.addColorStop(0, 'rgba(0,243,255,0)');
-      scan.addColorStop(0.5, 'rgba(0,243,255,0.08)');
-      scan.addColorStop(1, 'rgba(0,243,255,0)');
+      scan.addColorStop(0, 'rgba(53,242,121,0)');
+      scan.addColorStop(0.5, 'rgba(53,242,121,0.08)');
+      scan.addColorStop(1, 'rgba(53,242,121,0)');
       ctx.fillStyle = scan;
       ctx.fillRect(0, scanY - 36, pw, 72);
 
@@ -274,7 +274,7 @@ export default function HologramBackground({ className = '' }) {
           if (k === 0) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy);
         }
         const baseAlpha = lowPerf ? 0.16 : 0.28;
-        ctx.strokeStyle = `rgba(0,243,255,${baseAlpha})`;
+        ctx.strokeStyle = `rgba(53,242,121,${baseAlpha})`;
         ctx.lineWidth = Math.max(0.5, L.width * (0.88 + 0.12 * Math.sin((now * 0.001) + L.phase)));
         ctx.stroke();
 
@@ -286,9 +286,9 @@ export default function HologramBackground({ className = '' }) {
           const gy = lerp(p1.y, p2.y, 0.45 + 0.1 * Math.cos(now * 0.0007 + L.glintSeed));
           const gsize = 1.6 + Math.abs(Math.sin(now * 0.001 + L.glintSeed)) * 2.2;
           const gg = ctx.createRadialGradient(gx, gy, 0, gx, gy, gsize * 6);
-          gg.addColorStop(0, 'rgba(235,255,252,0.98)');
-          gg.addColorStop(0.3, 'rgba(120,255,230,0.42)');
-          gg.addColorStop(1, 'rgba(80,180,160,0)');
+          gg.addColorStop(0, 'rgba(240,250,235,0.98)');
+          gg.addColorStop(0.3, 'rgba(154,236,173,0.42)');
+          gg.addColorStop(1, 'rgba(47,126,70,0)');
           ctx.fillStyle = gg;
           ctx.beginPath();
           ctx.arc(gx, gy, gsize, 0, Math.PI * 2);
@@ -311,9 +311,9 @@ export default function HologramBackground({ className = '' }) {
         const x = pt.x + Math.cos(n.t * 40 + i) * jitter;
         const y = pt.y + Math.sin(n.t * 30 + i * 0.5) * jitter;
         const g = ctx.createRadialGradient(x, y, 0, x, y, n.size * 6);
-        g.addColorStop(0, 'rgba(235,255,252,0.98)');
-        g.addColorStop(0.3, 'rgba(90,255,225,0.64)');
-        g.addColorStop(1, 'rgba(30,80,70,0)');
+        g.addColorStop(0, 'rgba(240,250,235,0.98)');
+        g.addColorStop(0.3, 'rgba(127,241,158,0.64)');
+        g.addColorStop(1, 'rgba(16,63,34,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(x, y, n.size, 0, Math.PI * 2);
@@ -321,7 +321,7 @@ export default function HologramBackground({ className = '' }) {
 
         if (!lowPerf) {
           ctx.beginPath();
-          ctx.fillStyle = `rgba(0,240,255,0.10)`;
+          ctx.fillStyle = `rgba(54,238,120,0.10)`;
           ctx.arc(x, y, n.size * 3.4, 0, Math.PI * 2);
           ctx.fill();
         }
@@ -334,7 +334,7 @@ export default function HologramBackground({ className = '' }) {
       ctx.globalCompositeOperation = 'lighter';
 
       // subtle grid lines (static + wavering)
-      ctx.strokeStyle = 'rgba(0,220,200,0.075)';
+      ctx.strokeStyle = 'rgba(47,212,111,0.075)';
       ctx.lineWidth = lowPerf ? 0.55 : 0.75;
       const stepY = lowPerf ? 36 : 26;
       for (let y = ph * 0.08; y < ph * 0.92; y += stepY) {
@@ -351,7 +351,7 @@ export default function HologramBackground({ className = '' }) {
         const x = lerp(tr.sx, tr.tx, t);
         const y = lerp(tr.sy, tr.ty, t);
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,230,210,${0.045 + Math.abs(Math.sin(tr.phase + now * 0.0006)) * 0.055})`;
+        ctx.strokeStyle = `rgba(51,224,116,${0.045 + Math.abs(Math.sin(tr.phase + now * 0.0006)) * 0.055})`;
         ctx.lineWidth = 0.8 * (lowPerf ? 0.7 : 1);
         ctx.moveTo(tr.sx, tr.sy);
         ctx.quadraticCurveTo((tr.sx + x) / 2 + Math.cos(tr.phase * 0.01) * 40, (tr.sy + y) / 2 + Math.sin(tr.phase * 0.01) * 26, x, y);
@@ -360,7 +360,7 @@ export default function HologramBackground({ className = '' }) {
         // hub glow
         const hubAlpha = 0.08 + Math.abs(Math.sin(tr.phase * 0.001 + now * 0.0007)) * 0.10;
         ctx.beginPath();
-        ctx.fillStyle = `rgba(0,230,210,${hubAlpha})`;
+        ctx.fillStyle = `rgba(51,224,116,${hubAlpha})`;
         ctx.arc(tr.sx, tr.sy, lowPerf ? 5 : 8, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -371,8 +371,8 @@ export default function HologramBackground({ className = '' }) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
       const g = ctx.createRadialGradient(pw / 2, ph / 2, 2, pw / 2, ph / 2, Math.max(pw, ph) * 0.6);
-      g.addColorStop(0, 'rgba(0,245,255,0.16)');
-      g.addColorStop(0.5, 'rgba(0,150,140,0.055)');
+      g.addColorStop(0, 'rgba(56,244,125,0.16)');
+      g.addColorStop(0.5, 'rgba(24,118,61,0.055)');
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, pw, ph);
@@ -386,7 +386,7 @@ export default function HologramBackground({ className = '' }) {
           const intensity = 0.12 * (0.6 + Math.abs(Math.sin(now * 0.0003 + i)));
           const rg = ctx.createRadialGradient(lx, ly, 0, lx, ly, 220);
           rg.addColorStop(0, `rgba(255,255,255,${intensity.toFixed(3)})`);
-          rg.addColorStop(0.18, `rgba(140,255,230,${(intensity * 0.6).toFixed(3)})`);
+          rg.addColorStop(0.18, `rgba(172,240,190,${(intensity * 0.6).toFixed(3)})`);
           rg.addColorStop(1, 'rgba(0,0,0,0)');
           ctx.fillStyle = rg;
           ctx.fillRect(lx - 220, ly - 220, 440, 440);

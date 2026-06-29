@@ -48,9 +48,9 @@ export default function Hologram() {
       ctx.globalCompositeOperation = 'lighter';
 
       const halo = ctx.createRadialGradient(cx, cy, size * 0.08, cx, cy, outer * 1.28);
-      halo.addColorStop(0, 'rgba(160,255,245,0.22)');
-      halo.addColorStop(0.36, 'rgba(0,243,255,0.12)');
-      halo.addColorStop(0.72, 'rgba(0,180,170,0.035)');
+      halo.addColorStop(0, 'rgba(190,244,203,0.22)');
+      halo.addColorStop(0.36, 'rgba(53,242,121,0.12)');
+      halo.addColorStop(0.72, 'rgba(31,146,78,0.035)');
       halo.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = halo;
       ctx.beginPath();
@@ -65,7 +65,7 @@ export default function Hologram() {
         const r1 = outer * (longTick ? 0.88 : 0.93);
         const r2 = outer * (longTick ? 1.02 : 0.99);
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(120,255,245,${longTick ? 0.24 : 0.12})`;
+        ctx.strokeStyle = `rgba(154,236,173,${longTick ? 0.24 : 0.12})`;
         ctx.lineWidth = longTick ? 1.7 : 0.8;
         ctx.moveTo(Math.cos(angle) * r1, Math.sin(angle) * r1);
         ctx.lineTo(Math.cos(angle) * r2, Math.sin(angle) * r2);
@@ -77,7 +77,7 @@ export default function Hologram() {
       for (let i = 0; i < 4; i++) {
         const r = outer * (0.42 + i * 0.16);
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,243,255,${0.08 + i * 0.035})`;
+        ctx.strokeStyle = `rgba(53,242,121,${0.08 + i * 0.035})`;
         ctx.lineWidth = 1 + i * 0.55;
         ctx.setLineDash([r * 0.18, r * 0.055, r * 0.04, r * 0.075]);
         ctx.arc(0, 0, r, Math.PI * 0.1 * i, Math.PI * 1.82 + i * 0.18);
@@ -91,7 +91,7 @@ export default function Hologram() {
       ctx.scale(1, 0.52);
       for (let i = 0; i < 5; i++) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(70,255,210,${0.05 + i * 0.018})`;
+        ctx.strokeStyle = `rgba(110,239,145,${0.05 + i * 0.018})`;
         ctx.lineWidth = 0.8 + i * 0.25;
         ctx.arc(0, 0, inner + i * outer * 0.12, 0, Math.PI * 2);
         ctx.stroke();
@@ -101,9 +101,9 @@ export default function Hologram() {
       ctx.save();
       ctx.rotate(t * 0.018);
       const sweep = ctx.createRadialGradient(0, 0, 0, 0, 0, outer);
-      sweep.addColorStop(0, 'rgba(0,243,255,0.16)');
-      sweep.addColorStop(0.7, 'rgba(0,243,255,0.08)');
-      sweep.addColorStop(1, 'rgba(0,243,255,0)');
+      sweep.addColorStop(0, 'rgba(53,242,121,0.16)');
+      sweep.addColorStop(0.7, 'rgba(53,242,121,0.08)');
+      sweep.addColorStop(1, 'rgba(53,242,121,0)');
       ctx.fillStyle = sweep;
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -120,9 +120,9 @@ export default function Hologram() {
         const y = Math.sin(angle) * r * ySquash;
         const glowSize = i % 5 === 0 ? 24 : 14;
         const glow = ctx.createRadialGradient(x, y, 0, x, y, glowSize);
-        glow.addColorStop(0, 'rgba(220,255,250,0.95)');
-        glow.addColorStop(0.28, 'rgba(0,243,255,0.42)');
-        glow.addColorStop(1, 'rgba(0,243,255,0)');
+        glow.addColorStop(0, 'rgba(231,248,225,0.95)');
+        glow.addColorStop(0.28, 'rgba(53,242,121,0.42)');
+        glow.addColorStop(1, 'rgba(53,242,121,0)');
         ctx.fillStyle = glow;
         ctx.beginPath();
         ctx.arc(x, y, i % 5 === 0 ? 2.4 : 1.6, 0, Math.PI * 2);
@@ -134,7 +134,7 @@ export default function Hologram() {
       for (let i = 0; i < 8; i++) {
         const angle = (i / 8) * Math.PI * 2;
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,243,255,${0.045 + pulse * 0.035})`;
+        ctx.strokeStyle = `rgba(53,242,121,${0.045 + pulse * 0.035})`;
         ctx.lineWidth = i % 2 === 0 ? 1.1 : 0.65;
         ctx.moveTo(Math.cos(angle) * inner * 0.55, Math.sin(angle) * inner * 0.55);
         ctx.lineTo(Math.cos(angle) * outer * 0.78, Math.sin(angle) * outer * 0.78);
@@ -144,9 +144,9 @@ export default function Hologram() {
 
       const coreGlow = ctx.createRadialGradient(0, 0, 0, 0, 0, outer * 0.32);
       coreGlow.addColorStop(0, 'rgba(255,255,255,0.58)');
-      coreGlow.addColorStop(0.12, 'rgba(0,243,255,0.48)');
-      coreGlow.addColorStop(0.44, 'rgba(0,243,255,0.12)');
-      coreGlow.addColorStop(1, 'rgba(0,243,255,0)');
+      coreGlow.addColorStop(0.12, 'rgba(53,242,121,0.48)');
+      coreGlow.addColorStop(0.44, 'rgba(53,242,121,0.12)');
+      coreGlow.addColorStop(1, 'rgba(53,242,121,0)');
       ctx.fillStyle = coreGlow;
       ctx.beginPath();
       ctx.arc(0, 0, outer * 0.32, 0, Math.PI * 2);

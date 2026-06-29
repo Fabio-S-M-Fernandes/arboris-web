@@ -33,7 +33,7 @@ function HologramPanel() {
       ctx.rotate((t * Math.PI) / 180 / 8);
       for (let i = 6; i >= 1; i--) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,243,255,${0.03 + i * 0.02})`;
+        ctx.strokeStyle = `rgba(53,242,121,${0.03 + i * 0.02})`;
         ctx.lineWidth = 0.8 + i * 0.5;
         ctx.arc(0, 0, (Math.min(w, h) / 2) * (i / 6) * 0.9, 0, Math.PI * 2);
         ctx.stroke();
@@ -46,8 +46,8 @@ function HologramPanel() {
         const x = Math.cos(angle) * r;
         const y = Math.sin(angle) * r * 0.45;
         const glow = ctx.createRadialGradient(x, y, 0, x, y, 18);
-        glow.addColorStop(0, 'rgba(0,243,255,0.9)');
-        glow.addColorStop(1, 'rgba(0,243,255,0)');
+        glow.addColorStop(0, 'rgba(53,242,121,0.9)');
+        glow.addColorStop(1, 'rgba(53,242,121,0)');
         ctx.fillStyle = glow;
         ctx.fillRect(x - 2, y - 2, 4, 4);
       }
@@ -57,8 +57,8 @@ function HologramPanel() {
       // center soft glow
       ctx.save();
       const grd = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, Math.min(w, h) / 3);
-      grd.addColorStop(0, 'rgba(0,243,255,0.18)');
-      grd.addColorStop(1, 'rgba(0,243,255,0)');
+      grd.addColorStop(0, 'rgba(53,242,121,0.18)');
+      grd.addColorStop(1, 'rgba(53,242,121,0)');
       ctx.fillStyle = grd;
       ctx.beginPath();
       ctx.arc(w / 2, h / 2, Math.min(w, h) / 3, 0, Math.PI * 2);

@@ -6,20 +6,17 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  font-family: 'Inter', system-ui, sans-serif;
-  /* Fundo simples: gradiente suave que substitui o canvas pesado visualmente */
- 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 20px;
 }
 
 .arboris-auth-wrapper::before {
   content: '';
   position: absolute;
   inset: 0;
-  /* Vinheta sutil para foco central sem usar imagens pesadas */
-
   pointer-events: none;
   z-index: 0;
 }
@@ -27,185 +24,322 @@
 .arboris-auth-bg {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  /* manter como decoração sutil (baixa opacidade) caso o canvas ainda exista por baixo */
-  background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 170, 0.03), transparent 25%),
-                    radial-gradient(circle at 85% 30%, rgba(0, 150, 255, 0.03), transparent 25%);
+  background-image: radial-gradient(circle at 15% 50%, rgba(53, 242, 121, 0.03), transparent 25%),
+                    radial-gradient(circle at 85% 30%, rgba(45, 180, 98, 0.03), transparent 25%);
   opacity: 0.06;
   z-index: 0;
   animation: pulse-bg 24s infinite alternate;
   pointer-events: none;
 }
 
-/* Pequeno painel translúcido atrás do cartão (transparente e discreto) */
+/* Painel translúcido atrás do cartão - REMOVER para layout lado a lado */
 .auth-plate {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 380px;
-  height: 550px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.02); /* muito transparente */
-  border: 3px solid rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.651);
-  z-index: 1;
-  pointer-events: none; /* não bloquear interação */
+  display: none;
 }
 
 /* Configuração do 3D Flip */
 .auth-card-container {
-  perspective: 1000px; /* Cria a profundidade 3D */
-  z-index: 2; /* ficar acima do fundo decorativo e da placa */
-  width: 360px; /* mais compacto */
-  height: 480px;
+  perspective: 1300px;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  height: auto;
+  transform-style: preserve-3d;
+  transition: transform 0.95s ease;
 }
 
 .auth-card {
-  width: 100%;
-  height: 100%;
   position: relative;
-  transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+  width: 100%;
+  transition: transform 0.35s ease;
   transform-style: preserve-3d;
 }
 
-.auth-card-container.flipped .auth-card {
-  transform: rotateY(180deg);
+.auth-card-container:hover .auth-card {
+  transform: translateZ(8px);
 }
 
-/* Faces do cartão (Glassmorphism) */
-.card-face {
-  position: absolute;
-  width: 100%;
+/* Wrapper para animação de slide */
+.auth-cards-wrapper {
+  display: flex;
+  width: 200%;
+  transition: transform 0.6s cubic-bezier(0.33, 0.66, 0.66, 1);
+  transform: translateX(0);
   height: 100%;
+}
+
+.auth-card-container.flipped .auth-cards-wrapper {
+  transform: translateX(-50%);
+}
+
+.auth-card {
+  width: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 560px;
   backface-visibility: hidden;
-  /* sem fundo: deixar totalmente transparente para exibir o holograma */
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: none;
-  border-radius: 20px;
-  padding: 28px; /* padding reduzido para cartão menor */
-  box-shadow: none;
+}
+
+/* Faces do cartão */
+.card-face {
+  width: 100%;
+  min-height: 620px;
+  background: rgba(0, 0, 0, 0.24);
+  border: 1.5px solid rgba(53, 242, 122, 0.6);
+  border-radius: 24px;
+  padding: 40px 32px;
+  box-shadow: inset 0 1px 35px rgba(0, 255, 94, 0.16), 0 0 45px rgba(0, 255, 94, 0.08);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  backface-visibility: hidden;
 }
-
 .card-back {
-  transform: rotateY(180deg);
+  transform: none;
 }
 
-/* Tipografia e Ícones */
+/* Segundo card (Cadastro) com background especial */
+.auth-cards-wrapper .auth-card:last-child .card-face {
+  border-color: rgba(55, 255, 0, 0.25) !important;
+}
+
+/* Header com ícone e título */
 .brand-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
 }
 
 .tree-icon {
-  font-size: 3rem;
-  filter: drop-shadow(0 0 10px rgba(0, 255, 170, 0.6));
+  font-size: 44px;
+  display: block;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 15px rgba(53, 242, 121, 0.45));
+  animation: float 3s ease-in-out infinite;
+  transition: transform 0.45s ease;
 }
 
 h2 {
-  color: #fff;
-  font-size: 1.8rem;
-  margin-top: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
+  color: #e8f1e7;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #f5f7ef 0%, #35f279 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Inputs Holográficos */
+/* Formulário */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 16px;
+  width: 100%;
+  flex: 0 1 auto;
+  margin-bottom: 20px;
 }
 
 .input-group {
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(178, 226, 182, 0.9);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 input {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px 14px;
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 1rem;
+  border: 1.5px solid rgba(53, 242, 121, 0.25);
+  border-radius: 10px;
+  color: #e8f1e7;
+  font-size: 13px;
+  font-weight: 400;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 input::placeholder {
   color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
 }
 
 input:focus {
-  background: rgba(0, 255, 170, 0.05);
-  border-color: rgba(0, 255, 170, 0.5);
-  box-shadow: 0 0 15px rgba(0, 255, 170, 0.1);
+  background: rgba(53, 242, 121, 0.1);
+  border-color: rgba(53, 242, 121, 0.6);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3),
+              0 0 15px rgba(53, 242, 121, 0.2);
 }
 
-/* Linha de escaneamento embaixo do input */
+input:disabled {
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Linha holográfica */
 .holographic-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 0%;
-  background: linear-gradient(90deg, transparent, #00ffaa, transparent);
-  transition: width 0.4s ease;
+  display: none;
 }
 
-input:focus ~ .holographic-line {
-  width: 100%;
-}
-
-/* Botão Neon */
+/* Botão */
 .holo-button {
   margin-top: 10px;
-  padding: 15px;
+  padding: 16px 24px;
+  width: 100%;
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #6c5ce7, #00ffaa);
-  color: #050d14;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
+  border-radius: 18px;
+  background: rgba(173, 255, 178, 0.98);
+  color: #021108;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 255, 170, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18), 0 0 12px rgba(82, 255, 123, 0.18);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.holo-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(0, 255, 170, 0.6), 
-              0 0 10px rgba(108, 92, 231, 0.6);
+.holo-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+  z-index: 0;
+  transition: left 0.5s ease;
 }
 
-/* Texto de alternância (Toggle) */
+.holo-button:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2), 0 0 15px rgba(82, 255, 123, 0.22);
+  background: rgba(196, 255, 199, 1);
+}
+
+.holo-button:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.holo-button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.holo-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mensagens de erro e sucesso */
+.auth-error {
+  color: #ff9e9e;
+  background: linear-gradient(135deg, rgba(255, 80, 80, 0.12), rgba(255, 100, 100, 0.08));
+  padding: 9px 11px;
+  border-radius: 10px;
+  border-left: 3px solid rgba(255, 100, 100, 0.5);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 4px;
+}
+
+.auth-success {
+  color: #9eff9e;
+  background: linear-gradient(135deg, rgba(80, 255, 80, 0.12), rgba(100, 255, 100, 0.08));
+  padding: 9px 11px;
+  border-radius: 10px;
+  border-left: 3px solid rgba(100, 255, 100, 0.5);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 4px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Texto de alternância */
 .toggle-text {
   text-align: center;
-  margin-top: 25px;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-top: 0;
 }
 
 .toggle-text span {
-  color: #00ffaa;
+  color: #35f279;
   cursor: pointer;
-  font-weight: bold;
-  transition: color 0.3s;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.toggle-text span::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #35f279;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .toggle-text span:hover {
   color: #fff;
-  text-shadow: 0 0 8px #00ffaa;
+  text-shadow: 0 0 12px rgba(53, 242, 121, 0.5);
+}
+
+.toggle-text span:hover::after {
+  width: 100%;
 }
 
 /* Animações Keyframes */
@@ -214,11 +348,55 @@ input:focus ~ .holographic-line {
   100% { opacity: 1; }
 }
 
-/* Small error/message style */
-.auth-error {
-  color: #ffb4b4;
-  background: rgba(255,80,80,0.04);
-  padding: 0.6rem 0.9rem;
-  border-radius: 8px;
-  margin-bottom: 0.6rem;
+/* Responsividade */
+@media (max-width: 900px) {
+  .auth-card-container {
+    max-width: 100%;
+    width: 90vw;
+  }
+
+  .card-face {
+    min-height: 520px;
+    padding: 32px 24px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .tree-icon {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .arboris-auth-wrapper {
+    padding: 16px;
+  }
+
+  .auth-card-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  .card-face {
+    min-height: 480px;
+    padding: 28px 20px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .tree-icon {
+    font-size: 36px;
+  }
+
+  .auth-form {
+    gap: 12px;
+  }
+
+  .input-group {
+    margin-bottom: 2px;
+  }
 }

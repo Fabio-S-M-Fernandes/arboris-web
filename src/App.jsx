@@ -37,7 +37,7 @@ function Home() {
         <main>
           <Reveal>
             <section>
-              <h2 style={{ textAlign: 'center', color: '#fff', fontSize: '1.5rem', marginBottom: '2rem' }}>
+              <h2 style={{ textAlign: 'center', color: 'var(--text-heading)', fontSize: '1.5rem', marginBottom: '2rem' }}>
                 Painel de Controle Holográfico
               </h2>
               <Hologram />

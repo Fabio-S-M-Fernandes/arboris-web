@@ -73,7 +73,7 @@ export default function PreloadExplosion({ onFinish }) {
         const angle = Math.random() * Math.PI * 2;
         const speed = (Math.random() * 3.3 + 1.2) * (isMobile ? 0.72 : 1);
         const size = Math.random() * 4.2 + 0.8;
-        const hue = 176 + Math.random() * 54;
+        const hue = 126 + Math.random() * 18;
         parts.push({
           x: cx(),
           y: cy(),
@@ -168,9 +168,9 @@ export default function PreloadExplosion({ onFinish }) {
       const ringRadius = coreRadius * (2.05 + Math.sin(now * 0.003) * 0.12);
 
       const glow = ctx.createRadialGradient(cx(), cy(), 0, cx(), cy(), coreRadius * 7.4);
-      glow.addColorStop(0, 'rgba(235,255,252,1)');
-      glow.addColorStop(0.12, 'rgba(0,245,255,0.92)');
-      glow.addColorStop(0.42, 'rgba(0,170,190,0.24)');
+      glow.addColorStop(0, 'rgba(240,250,235,1)');
+      glow.addColorStop(0.12, 'rgba(56,244,125,0.92)');
+      glow.addColorStop(0.42, 'rgba(31,146,78,0.24)');
       glow.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = glow;
       ctx.beginPath();
@@ -180,7 +180,7 @@ export default function PreloadExplosion({ onFinish }) {
       ctx.save();
       ctx.translate(cx(), cy());
       ctx.rotate(now * 0.0015);
-      ctx.strokeStyle = 'rgba(0,243,255,0.58)';
+      ctx.strokeStyle = 'rgba(53,242,121,0.58)';
       ctx.lineWidth = 1.4;
       ctx.setLineDash([ringRadius * 0.28, ringRadius * 0.08]);
       ctx.beginPath();
@@ -189,7 +189,7 @@ export default function PreloadExplosion({ onFinish }) {
       ctx.setLineDash([]);
       ctx.restore();
 
-      ctx.fillStyle = 'rgba(230,255,252,0.98)';
+      ctx.fillStyle = 'rgba(239,249,234,0.98)';
       ctx.beginPath();
       ctx.arc(cx(), cy(), Math.max(3, coreRadius * 0.14), 0, Math.PI * 2);
       ctx.fill();
@@ -220,7 +220,7 @@ export default function PreloadExplosion({ onFinish }) {
       shock.r += 245 * (isMobile ? 0.62 : 1);
       shock.alpha *= 0.94;
       ctx.beginPath();
-      ctx.strokeStyle = `rgba(170,255,245,${Math.max(0, shock.alpha * 0.14).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(190,244,203,${Math.max(0, shock.alpha * 0.14).toFixed(3)})`;
       ctx.lineWidth = 11 * (isMobile ? 0.8 : 1);
       ctx.arc(cx(), cy(), Math.min(shock.r, shock.max), 0, Math.PI * 2);
       ctx.stroke();
